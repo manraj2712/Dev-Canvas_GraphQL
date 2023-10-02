@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-
+import { signOut } from "next-auth/react";
 import { NavLinks } from "@/contants/links";
 import { getCurrentSession } from "@/lib/session";
 import AuthProviders from "./authProviders";
+import ProfileMenu from "./profileMenu";
 
 export default async function Navbar() {
   const session = await getCurrentSession();
@@ -22,18 +23,7 @@ export default async function Navbar() {
         </ul>
       </div>
       {session ? (
-        <Link href="/profile">
-          {session?.user?.image ? (
-            <Image
-              src={session?.user?.image}
-              width={30}
-              height={30}
-              alt={session?.user?.name}
-            />
-          ) : (
-            <div></div>
-          )}
-        </Link>
+        <ProfileMenu session={session}/>
       ) : (
         <AuthProviders />
       )}
