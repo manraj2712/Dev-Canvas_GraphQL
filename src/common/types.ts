@@ -61,3 +61,9 @@ export interface ProjectForm {
   githubUrl: string;
   category: string;
 }
+
+export interface CreateUserInput {
+  name: string;
+  email: string;
+  avatarUrl: string;
+}
