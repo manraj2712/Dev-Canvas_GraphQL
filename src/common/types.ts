@@ -67,3 +67,8 @@ export interface CreateUserInput {
   email: string;
   avatarUrl: string;
 }
+
+export interface CookieValue {
+  name: string;
+  value: string;
+}

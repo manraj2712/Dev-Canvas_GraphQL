@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
 import { NavLinks } from "@/contants/links";
 import { getCurrentSession } from "@/lib/session";
 import AuthProviders from "./authProviders";
@@ -23,7 +22,10 @@ export default async function Navbar() {
         </ul>
       </div>
       {session ? (
-        <ProfileMenu session={session}/>
+        <div className="flexCenter gap-4">
+          <ProfileMenu session={session} />{" "}
+          <Link href={"/create-project"}>Share Work</Link>
+        </div>
       ) : (
         <AuthProviders />
       )}
