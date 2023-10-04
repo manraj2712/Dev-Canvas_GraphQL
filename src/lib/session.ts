@@ -1,3 +1,4 @@
+import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, Session, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
@@ -7,7 +8,6 @@ import { createUser, getUser } from "../graphql/methods";
 import { SessionInterface, UserProfile } from "@/common/types";
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET!,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -19,12 +19,11 @@ export const authOptions: NextAuthOptions = {
     logo: "/logo.svg",
   },
   jwt: {
-    maxAge: 60 * 60,
     encode: ({ secret, token }) => {
       const encodedToken = jsonwebtoken.sign(
         {
           ...token,
-          iss: "grafbase",
+          iss: process.env.ISSUER_URL!,
           exp: Math.floor(Date.now() / 1000) + 60 * 60,
         },
         secret
@@ -79,3 +78,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+export async function getCurrentServerSession(): Promise<SessionInterface | null> {
+  const session = (await getServerSession(authOptions)) as SessionInterface;
+  return session;
+}

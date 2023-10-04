@@ -6,11 +6,14 @@ import { categoryFilters } from "@/contants/categories";
 import CustomMenu from "./customMenu";
 import { useState } from "react";
 import Button from "./button";
-import { ProjectForm } from "@/common/types";
-
-import {createNewProject} from "@/graphql/methods";
+import { ProjectForm, SessionInterface } from "@/common/types";
+import { createNewProject } from "@/graphql/methods";
+import { getToken } from "@/lib/actions";
+import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 export default function ProjectForm({ type }: { type: ProjectFormType }) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState<ProjectForm>({
     image: "",
@@ -21,14 +24,23 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
     category: "",
   });
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      
-      await createNewProject({form:form,creatorId:"",token:""});
-    } catch (e) {
+      const tokenObj = await getToken();
+      const session = await getSession() as SessionInterface;
+      if (type === ProjectFormType.CREATE && tokenObj && session) {
+        await createNewProject({
+          form: form,
+          creatorId: session.user.id,
+          token: tokenObj.token,
+        });
+        router.push("/");
+      }
+    } catch (e:any) {
+      console.log(e.toString());
     } finally {
       setIsSubmitting(false);
     }
@@ -64,6 +76,7 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
       [fieldName]: value,
     }));
   };
+
   return (
     <form className="flexStart form" onSubmit={handleFormSubmit}>
       <div className="flexStart form_image-container">
@@ -146,8 +159,8 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
           }
           type="submit"
           leftIcon={isSubmitting ? "" : "/plus.svg"}
-          handleClick={() => {
-            setIsSubmitting(true);
+          handleClick={(e) => {
+            handleFormSubmit(e);
           }}
         />
       </div>

@@ -1,19 +1,32 @@
-import { UserProfile, CreateUserInput, ProjectForm } from "@/common/types";
-import { getUserQuery } from "./queries";
+import {
+  UserProfile,
+  CreateUserInput,
+  ProjectForm,
+  ProjectInterface,
+} from "@/common/types";
+import {
+  getProjectByIdQuery,
+  getProjectsQuery,
+  getUserQuery,
+  getProjectsOfUserQuery,
+} from "./queries";
 import { createProjectMutation, createUserMutation } from "./mutations";
 
 import { GraphQLClient } from "graphql-request";
 import { uploadImage } from "@/lib/actions";
 
 const isProduction = process.env.NODE_ENV === "production";
-const endPoint = isProduction
-  ? process.env.GRAFBASE_API_URL!
+const apiUrl = isProduction
+  ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ""
   : "http://127.0.0.1:4000/graphql";
+const apiKey = isProduction
+  ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ""
+  : "letmein";
 const serverUrl = isProduction
-  ? process.env.SERVER_URL!
+  ? process.env.NEXT_PUBLIC_SERVER_URL
   : "http://localhost:3000";
-const client = new GraphQLClient(endPoint);
-const key = isProduction ? process.env.GRAFBASE_API_KEY! : "anykey";
+
+const client = new GraphQLClient(apiUrl);
 
 export const makeGraphQLRequest = async (query: string, variables: {}) => {
   try {
@@ -24,12 +37,12 @@ export const makeGraphQLRequest = async (query: string, variables: {}) => {
 };
 
 export const getUser = async (email: String) => {
-  client.setHeader("x-api-key", key);
+  client.setHeader("x-api-key", apiKey);
   return await makeGraphQLRequest(getUserQuery, { email });
 };
 
 export const createUser = async (newUser: CreateUserInput) => {
-  client.setHeader("x-api-key", key);
+  client.setHeader("x-api-key", apiKey);
   return await makeGraphQLRequest(createUserMutation, { input: newUser });
 };
 
@@ -42,14 +55,14 @@ export const createNewProject = async ({
   creatorId: string;
   token: string;
 }) => {
-  const imageUrl = await uploadImage(form.image, token);
+  const imageObj = await uploadImage(form.image);
 
-  if (imageUrl) {
+  if (imageObj) {
     client.setHeader("Authorization", `Bearer ${token}`);
     const variables = {
       input: {
         ...form,
-        image: imageUrl,
+        image: imageObj.url,
         createdBy: {
           link: creatorId,
         },
@@ -57,4 +70,28 @@ export const createNewProject = async ({
     };
     return await makeGraphQLRequest(createProjectMutation, variables);
   }
+};
+
+export const fetchAllProjects = async ({
+  category,
+  endCursor,
+}: {
+  category?: string;
+  endCursor?: string;
+}) => {
+  client.setHeader("x-api-key", apiKey);
+  const variables = {
+    category,
+    endCursor,
+  };
+  return await makeGraphQLRequest(getProjectsQuery, variables);
+};
+
+export const getProjectDetails = async (id: string) => {
+  client.setHeader("x-api-key", apiKey);
+  return await makeGraphQLRequest(getProjectByIdQuery, { id });
+};
+export const getUserProjects = async (id: string, last?: number) => {
+  client.setHeader("x-api-key", apiKey);
+  return await makeGraphQLRequest(getProjectsOfUserQuery, { id, last });
 };

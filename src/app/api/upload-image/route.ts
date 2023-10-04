@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import { getServerSession } from "next-auth/next";
+import { getCurrentServerSession } from "@/lib/session";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
+  const session = getCurrentServerSession();
   if (!session) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }

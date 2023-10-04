@@ -3,11 +3,10 @@ import Image from "next/image";
 import { NavLinks } from "@/contants/links";
 import AuthProviders from "./authProviders";
 import ProfileMenu from "./profileMenu";
-import { getSession } from "next-auth/react";
-import { SessionInterface } from "@/common/types";
+import { getCurrentServerSession } from "@/lib/session";
 
 export default async function Navbar() {
-  const session = (await getSession()) as SessionInterface;
+  const session = await getCurrentServerSession();
   return (
     <nav className="flexBetween navbar">
       <div className="flex-1 flexStart gap-10">

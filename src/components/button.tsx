@@ -6,7 +6,7 @@ type Props = {
   type?: "button" | "submit" | "reset";
   leftIcon?: string;
   rightIcon?: string;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
   handleClick?: MouseEventHandler;
   bgColor?: string;
   textColor?: string;
@@ -16,7 +16,7 @@ export default function Button({
   title,
   type,
   leftIcon,
-  isSubmitting,
+  isSubmitting = false,
   rightIcon,
   handleClick,
   bgColor = "#CB33FF",
@@ -25,7 +25,7 @@ export default function Button({
   return (
     <button
       style={{ backgroundColor: bgColor, color: textColor }}
-      className="flexCenter gap-3 px-4 py-3 rounded-md"
+      className="flexCenter gap-3 px-4 py-3 rounded-lg"
       type={type || "button"}
       disabled={isSubmitting}
       onClick={handleClick}
