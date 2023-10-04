@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { NavLinks } from "@/contants/links";
-import { getCurrentSession } from "@/lib/session";
 import AuthProviders from "./authProviders";
 import ProfileMenu from "./profileMenu";
+import { getSession } from "next-auth/react";
+import { SessionInterface } from "@/common/types";
 
 export default async function Navbar() {
-  const session = await getCurrentSession();
+  const session = (await getSession()) as SessionInterface;
   return (
     <nav className="flexBetween navbar">
       <div className="flex-1 flexStart gap-10">

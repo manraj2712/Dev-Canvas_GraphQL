@@ -5,9 +5,34 @@ import FormFeild from "./formField";
 import { categoryFilters } from "@/contants/categories";
 import CustomMenu from "./customMenu";
 import { useState } from "react";
+import Button from "./button";
+import { ProjectForm } from "@/common/types";
+
+import {createNewProject} from "@/graphql/methods";
 
 export default function ProjectForm({ type }: { type: ProjectFormType }) {
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {};
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState<ProjectForm>({
+    image: "",
+    title: "",
+    description: "",
+    liveSiteUrl: "",
+    githubUrl: "",
+    category: "",
+  });
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      
+      await createNewProject({form:form,creatorId:"",token:""});
+    } catch (e) {
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files?.[0];
@@ -21,7 +46,7 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
 
     reader.readAsDataURL(file);
 
-    reader.onloadend = () => {
+    reader.onload = () => {
       const result = reader.result as string;
       handleStateChange({ value: result, fieldName: "image" });
     };
@@ -39,14 +64,6 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
       [fieldName]: value,
     }));
   };
-  const [form, setForm] = useState({
-    image: "",
-    title: "",
-    description: "",
-    liveUrl: "",
-    githubUrl: "",
-    category: "",
-  });
   return (
     <form className="flexStart form" onSubmit={handleFormSubmit}>
       <div className="flexStart form_image-container">
@@ -93,9 +110,9 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
         placeholder="https://codestreax.tech"
         error="Please enter a valid url"
         setState={(value: string) => {
-          handleStateChange({ value: value, fieldName: "liveUrl" });
+          handleStateChange({ value: value, fieldName: "liveSiteUrl" });
         }}
-        state={form.liveUrl}
+        state={form.liveSiteUrl}
       />
       <FormFeild
         label="Github URL"
@@ -115,14 +132,25 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
           handleStateChange({ value: value, fieldName: "category" });
         }}
       />
-
-      <button
-        type="submit"
-        className="flexCenter form_submit-btn"
-        disabled={type === ProjectFormType.CREATE}
-      >
-        Create Project
-      </button>
+      <div className="flexStart w-full">
+        <Button
+          isSubmitting={isSubmitting}
+          title={
+            isSubmitting
+              ? type === ProjectFormType.CREATE
+                ? "Creating..."
+                : "Updating..."
+              : type === ProjectFormType.CREATE
+              ? "Create"
+              : "Update"
+          }
+          type="submit"
+          leftIcon={isSubmitting ? "" : "/plus.svg"}
+          handleClick={() => {
+            setIsSubmitting(true);
+          }}
+        />
+      </div>
     </form>
   );
 }

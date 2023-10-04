@@ -13,3 +13,20 @@ export const createUserMutation = `
         }
     }
 `;
+
+
+export const createProjectMutation = `
+    mutation CreateProject($input: ProjectCreateInput!){
+        projectCreate(input: $input) {
+            project {
+              title
+              description
+              createdBy {
+                email
+                name
+              }
+              id
+            }
+        }
+    }
+`;

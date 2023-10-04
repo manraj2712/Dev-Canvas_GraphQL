@@ -1,10 +1,8 @@
-import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, Session, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
-
 import { createUser, getUser } from "../graphql/methods";
 import { SessionInterface, UserProfile } from "@/common/types";
 
@@ -22,23 +20,22 @@ export const authOptions: NextAuthOptions = {
   },
   jwt: {
     maxAge: 60 * 60,
-    secret: process.env.NEXTAUTH_SECRET!,
-    // encode: ({ secret, token }) => {
-    //   const encodedToken = jsonwebtoken.sign(
-    //     {
-    //       ...token,
-    //       iss: "grafbase",
-    //       exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    //     },
-    //     secret
-    //   );
+    encode: ({ secret, token }) => {
+      const encodedToken = jsonwebtoken.sign(
+        {
+          ...token,
+          iss: "grafbase",
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+        },
+        secret
+      );
 
-    //   return encodedToken;
-    // },
-    // decode: async ({ secret, token }) => {
-    //   const decodedToken = jsonwebtoken.verify(token!, secret);
-    //   return decodedToken as JWT;
-    // },
+      return encodedToken;
+    },
+    decode: async ({ secret, token }) => {
+      const decodedToken = jsonwebtoken.verify(token!, secret);
+      return decodedToken as JWT;
+    },
   },
   callbacks: {
     async session({ session }): Promise<SessionInterface | Session> {
@@ -82,8 +79,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-export async function getCurrentSession(): Promise<SessionInterface | null> {
-  const session = (await getServerSession(authOptions)) as SessionInterface;
-  return session;
-}

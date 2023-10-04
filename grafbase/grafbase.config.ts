@@ -19,7 +19,7 @@ const Project = g.model('Project', {
   name: g.string().length({min: 3, max: 20}),
   description: g.string().length({min: 10, max: 1000}),
   image: g.url(),
-  category: g.string().search(),
+  category: g.string().default('other'),
   createdBy: g.relation(()=>User),
 }).auth((rules)=>{
   rules.public().read()
