@@ -1,9 +1,11 @@
 import { ProjectInterface } from "@/common/types";
+import Categories from "@/components/categories";
+import Pagination from "@/components/pagination";
 import ProjectCard from "@/components/projectCard";
 import { fetchAllProjects } from "@/graphql/methods";
 
 type ProjectSearch = {
-  projectCollection: {
+  projectSearch: {
     edges: {
       node: ProjectInterface;
     }[];
@@ -16,14 +18,18 @@ type ProjectSearch = {
   };
 };
 
-export default async function Home() {
-  const data = (await fetchAllProjects({})) as ProjectSearch;
-  const projectsToDisplay = data?.projectCollection?.edges;
-
+export default async function Home({
+  searchParams: { category, endCursor },
+}: {
+  searchParams: { category?: string, endCursor?: string };
+}) {
+  const data = (await fetchAllProjects({ category,endCursor })) as ProjectSearch;
+  const projectsToDisplay = data?.projectSearch?.edges;
+  const pagination = data?.projectSearch?.pageInfo;
   if (projectsToDisplay.length === 0) {
     return (
       <section className="flexStart flex-col paddings">
-        Categories
+        <Categories />
         <p className="no-result-test test-center">
           No projects found, go create some first
         </p>
@@ -33,13 +39,18 @@ export default async function Home() {
   return (
     <div>
       <section className="flex-start flex-col paddings mb-16">
-        <h1>Categories</h1>
+        <Categories />
         <section className="projects-grid">
           {projectsToDisplay.map(({ node }: { node: ProjectInterface }) => {
-            return <ProjectCard {...node} key={node.id}/>;
+            return <ProjectCard {...node} key={node.id} />;
           })}
         </section>
-        <h1>Load More</h1>
+        <Pagination
+          startCursor={pagination?.startCursor}
+          endCursor={pagination?.endCursor}
+          hasNextPage={pagination?.hasNextPage}
+          hasPreviousPage={pagination?.hasPreviousPage}
+        />
       </section>
     </div>
   );

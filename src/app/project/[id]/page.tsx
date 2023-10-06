@@ -18,10 +18,7 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const renderLink = () => `/profile/${projectDetails.createdBy?.id}`;
   return (
     <Modal>
-      <section
-        className="flexBetween gap-y-8 max-xs:flex-col w-full"
-        style={{}}
-      >
+      <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
         <div className="flex-1 flex items-start gap-5 w-full max-xs:flex-col">
           <Link href={renderLink()}>
             <Image

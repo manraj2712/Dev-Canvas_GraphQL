@@ -9,6 +9,7 @@ import {
   getProjectsQuery,
   getUserQuery,
   getProjectsOfUserQuery,
+  getProjectsByCategoryQuery,
 } from "./queries";
 import {
   createProjectMutation,
@@ -85,11 +86,12 @@ export const fetchAllProjects = async ({
   endCursor?: string;
 }) => {
   client.setHeader("x-api-key", apiKey);
+  const query = category ? getProjectsByCategoryQuery : getProjectsQuery;
   const variables = {
     category,
-    endCursor,
+    endCursor
   };
-  return await makeGraphQLRequest(getProjectsQuery, variables);
+  return await makeGraphQLRequest(query, variables);
 };
 
 export const getProjectDetails = async (id: string) => {

@@ -13,8 +13,8 @@ export const getUserQuery = `
 `;
 
 export const getProjectsQuery = `
-query GetProjects($category: String, $endCursor: String) {
-    projectCollection(first: 8, after: $endCursor, filter: {category: {eq: $category}}) {
+query getProjects($endCursor: String) {
+  projectSearch(first: 1, after: $endCursor) {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -40,6 +40,36 @@ query GetProjects($category: String, $endCursor: String) {
     }
   }
 }
+`;
+
+export const getProjectsByCategoryQuery = `
+  query getProjects($category: String!, $endCursor: String) {
+    projectSearch(first: 1, after: $endCursor, filter: {category: {eq: $category}}) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          title
+          githubUrl
+          description
+          liveSiteUrl
+          id
+          image
+          category
+          createdBy {
+            id
+            email
+            name
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
 `;
 
 export const getProjectByIdQuery = `
