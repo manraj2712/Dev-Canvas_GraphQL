@@ -53,7 +53,7 @@ export interface SessionInterface extends Session {
   };
 }
 
-export interface ProjectForm {
+export interface ProjectFormInput {
   title: string;
   description: string;
   image: string;

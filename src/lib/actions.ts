@@ -10,7 +10,7 @@ export const uploadImage = async (imagePath: string) => {
   }
 };
 
-export const getToken = async () => {
+export const fetchToken = async () => {
   try {
     const res = await fetch("/api/auth/token");
     return res.json();
@@ -18,3 +18,8 @@ export const getToken = async () => {
     throw error;
   }
 };
+
+export function isBase64DataURL(str: string) {
+  const regex = /^data:image\/[a-z]+;base64,/;
+  return regex.test(str);
+}

@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export async function getCurrentServerSession(): Promise<SessionInterface | null> {
+export async function getCurrentServerSession(): Promise<SessionInterface> {
   const session = (await getServerSession(authOptions)) as SessionInterface;
   return session;
 }

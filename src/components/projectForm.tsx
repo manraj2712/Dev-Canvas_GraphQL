@@ -6,22 +6,32 @@ import { categoryFilters } from "@/contants/categories";
 import CustomMenu from "./customMenu";
 import { useState } from "react";
 import Button from "./button";
-import { ProjectForm, SessionInterface } from "@/common/types";
-import { createNewProject } from "@/graphql/methods";
-import { getToken } from "@/lib/actions";
+import {
+  ProjectFormInput,
+  ProjectInterface,
+  SessionInterface,
+} from "@/common/types";
+import { createNewProject, editUserProject } from "@/graphql/methods";
+import { fetchToken } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 
-export default function ProjectForm({ type }: { type: ProjectFormType }) {
+export default function ProjectForm({
+  type,
+  project,
+}: {
+  type: ProjectFormType;
+  project?: ProjectInterface;
+}) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form, setForm] = useState<ProjectForm>({
-    image: "",
-    title: "",
-    description: "",
-    liveSiteUrl: "",
-    githubUrl: "",
-    category: "",
+  const [form, setForm] = useState<ProjectFormInput>({
+    image: project?.image || "",
+    title: project?.title || "",
+    description: project?.description || "",
+    liveSiteUrl: project?.liveSiteUrl || "",
+    githubUrl: project?.githubUrl || "",
+    category: project?.category || "",
   });
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -29,17 +39,23 @@ export default function ProjectForm({ type }: { type: ProjectFormType }) {
     setIsSubmitting(true);
 
     try {
-      const tokenObj = await getToken();
-      const session = await getSession() as SessionInterface;
+      const tokenObj = await fetchToken();
+      const session = (await getSession()) as SessionInterface;
       if (type === ProjectFormType.CREATE && tokenObj && session) {
         await createNewProject({
           form: form,
           creatorId: session.user.id,
           token: tokenObj.token,
         });
-        router.push("/");
+      } else if (type === ProjectFormType.EDIT && tokenObj && session) {
+        await editUserProject({
+          form: form,
+          id: project?.id as string,
+          token: tokenObj.token,
+        });
+        router.push("/")
       }
-    } catch (e:any) {
+    } catch (e: any) {
       console.log(e.toString());
     } finally {
       setIsSubmitting(false);

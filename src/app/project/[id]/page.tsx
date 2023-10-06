@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import RelatedProjects from "@/components/relatedProjects";
+import ProjectActions from "@/components/projectActions";
 
 const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const session = await getCurrentServerSession();
@@ -17,7 +18,10 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const renderLink = () => `/profile/${projectDetails.createdBy?.id}`;
   return (
     <Modal>
-      <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
+      <section
+        className="flexBetween gap-y-8 max-xs:flex-col w-full"
+        style={{}}
+      >
         <div className="flex-1 flex items-start gap-5 w-full max-xs:flex-col">
           <Link href={renderLink()}>
             <Image
@@ -46,11 +50,11 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
           </div>
         </div>
 
-        {/* {session?.user?.email === projectDetails?.createdBy?.email && (
-          <div className="flex justify-end items-center gap-2">
+        {session?.user?.email === projectDetails?.createdBy?.email && (
+          <div className="flex justify-items-end items-center gap-2">
             <ProjectActions projectId={projectDetails?.id} />
           </div>
-        )} */}
+        )}
       </section>
 
       <section className="mt-14 flexCenter">
