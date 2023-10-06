@@ -19,8 +19,8 @@ export default function Button({
   isSubmitting = false,
   rightIcon,
   handleClick,
-  bgColor = "#CB33FF",
-  textColor = "#fff",
+  bgColor,
+  textColor,
 }: Props) {
   return (
     <button
