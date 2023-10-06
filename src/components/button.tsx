@@ -24,8 +24,7 @@ export default function Button({
 }: Props) {
   return (
     <button
-      style={{ backgroundColor: bgColor, color: textColor }}
-      className="flexCenter gap-3 px-4 py-3 rounded-lg"
+      className="flexCenter gap-3 px-4 py-3 rounded-lg bg-primary-purple text-white"
       type={type || "button"}
       disabled={isSubmitting}
       onClick={handleClick}

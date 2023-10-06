@@ -14,7 +14,7 @@ export const getUserQuery = `
 
 export const getProjectsQuery = `
 query getProjects($endCursor: String) {
-  projectSearch(first: 1, after: $endCursor) {
+  projectSearch(first: 10, after: $endCursor) {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -44,7 +44,7 @@ query getProjects($endCursor: String) {
 
 export const getProjectsByCategoryQuery = `
   query getProjects($category: String!, $endCursor: String) {
-    projectSearch(first: 1, after: $endCursor, filter: {category: {eq: $category}}) {
+    projectSearch(first: 10, after: $endCursor, filter: {category: {eq: $category}}) {
       pageInfo {
         hasNextPage
         hasPreviousPage

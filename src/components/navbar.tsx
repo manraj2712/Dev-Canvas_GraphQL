@@ -11,7 +11,7 @@ export default async function Navbar() {
     <nav className="flexBetween navbar">
       <div className="flex-1 flexStart gap-10">
         <Link href="/">
-          <Image src="/logo.svg" width={115} height={43} alt="Dribbble Clone" />
+          <Image src="/logo.svg" width={225} height={75} alt="Dribbble Clone" />
         </Link>
         <ul className="xl:flex hidden text-sm gap-7">
           {NavLinks.map((link, index) => (
