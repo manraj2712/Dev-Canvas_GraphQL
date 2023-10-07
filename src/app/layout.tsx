@@ -8,7 +8,7 @@ import SessionProviderComponent from "@/components/sessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dribbble Clone",
+  title: "DevCanvas",
   description: "Your Portfolio for the World",
 };
 
