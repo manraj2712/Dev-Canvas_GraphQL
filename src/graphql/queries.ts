@@ -14,7 +14,7 @@ export const getUserQuery = `
 
 export const getProjectsQuery = `
 query getProjects($endCursor: String) {
-  projectSearch(first: 10, after: $endCursor) {
+  projectSearch(first: 25, after: $endCursor) {
     pageInfo {
       hasNextPage
       hasPreviousPage
