@@ -18,8 +18,7 @@ DevCanvas is an open-source tool designed to help developers build and showcase 
 - **Cloudinary:** Cloudinary integration is included for efficient image and media management.
 
 - **Authentication with NextAuth:** User authentication is implemented using NextAuth, ensuring secure access to portfolio management.
-
-- **Superbase:** Used as a Cloud Progresql Database.
+  
 
 ## Getting Started
 
