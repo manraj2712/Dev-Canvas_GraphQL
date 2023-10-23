@@ -49,6 +49,6 @@ Before you begin, make sure you have the following software installed:
    cp .env.example .env
     ```
 4. **Start:**
-  ```bash
+    ```bash
    yarn dev
-  ```
+    ```
