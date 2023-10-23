@@ -53,8 +53,8 @@ export default function ProjectForm({
           id: project?.id as string,
           token: tokenObj.token,
         });
-        router.push("/");
       }
+      window.location.assign("/");
     } catch (e: any) {
       alert(e.message);
     } finally {
