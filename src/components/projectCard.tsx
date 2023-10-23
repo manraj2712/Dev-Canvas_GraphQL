@@ -21,8 +21,8 @@ const ProjectCard = (project: ProjectInterface, key: string) => {
       >
         <Image
           src={project.image}
-          width={414}
-          height={314}
+          width={514}
+          height={414}
           className="w-full h-full object-cover rounded-2xl"
           alt="Project Image"
         />

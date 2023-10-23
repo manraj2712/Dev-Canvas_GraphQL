@@ -30,7 +30,7 @@ export default function Button({
         ${textColor ? textColor : "text-white"} 
         ${
           isSubmitting ? "bg-black/50" : bgColor ? bgColor : "bg-primary-purple"
-        } rounded-xl text-sm font-medium max-md:w-full`}
+        } rounded-xl text-sm font-medium w-full`}
       onClick={handleClick}
     >
       {leftIcon && (

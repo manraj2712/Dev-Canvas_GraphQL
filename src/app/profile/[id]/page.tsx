@@ -19,7 +19,7 @@ const ProfilePage = async ({ params }: Props) => {
   }
   const { user } = result;
   return (
-    <section className="flexCenter flex-col max-w-10xl w-full mx-auto paddings">
+    <section className="flexCenter flex-col max-w-10xl w-full mx-auto paddings mb-10 mt-5">
       <section className="flexBetween max-lg:flex-col gap-10 w-full">
         <div className="flex items-start flex-col w-full">
           <Image

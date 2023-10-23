@@ -21,7 +21,7 @@ const RelatedProjects = async ({
           href={`/profile/${result?.user?.id}`}
           className="text-primary-purple text-base"
         >
-          View All
+          View Profile
         </Link>
       </div>
 

@@ -19,6 +19,7 @@ export const authOptions: NextAuthOptions = {
     logo: "/logo.svg",
   },
   jwt: {
+    secret: process.env.NEXTAUTH_SECRET!,
     encode: ({ secret, token }) => {
       const encodedToken = jsonwebtoken.sign(
         {

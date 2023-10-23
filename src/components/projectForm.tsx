@@ -53,10 +53,10 @@ export default function ProjectForm({
           id: project?.id as string,
           token: tokenObj.token,
         });
-        router.push("/")
+        router.push("/");
       }
     } catch (e: any) {
-      console.log(e.toString());
+      alert(e.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -161,7 +161,7 @@ export default function ProjectForm({
           handleStateChange({ value: value, fieldName: "category" });
         }}
       />
-      <div className="flexStart w-full">
+      <div className="w-full mt-10">
         <Button
           isSubmitting={isSubmitting}
           title={
