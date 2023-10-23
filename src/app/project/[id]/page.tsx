@@ -8,6 +8,15 @@ import Image from "next/image";
 import RelatedProjects from "@/components/relatedProjects";
 import ProjectActions from "@/components/projectActions";
 
+const personDescriptions = [
+  "Software Developer",
+  "UI/UX Designer",
+  "Product Manager",
+  "Frontend Developer",
+  "Backend Developer",
+  "Fullstack Developer",
+];
+
 const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const session = await getCurrentServerSession();
   const res = (await getProjectDetails(id)) as { project?: ProjectInterface };
@@ -103,6 +112,24 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
         </Link>
         <span className="w-full h-0.5 bg-light-white-200" />
       </section>
+      <div className="mt-5 flex flex-col justify-center text-center">
+        <p className="text-base font-semibold">
+          {projectDetails.createdBy.name}
+        </p>
+        <p>
+          {
+            personDescriptions[
+              Math.floor(Math.random() * personDescriptions.length)
+            ]
+          }
+        </p>
+        <div
+          // href={projectDetails.createdBy.email}
+          className="mt-4 px-5 py-3 text-sm sm:text-base rounded-3xl bg-black text-white mx-auto"
+        >
+          Work with me
+        </div>
+      </div>
 
       <RelatedProjects
         userId={projectDetails?.createdBy?.id}

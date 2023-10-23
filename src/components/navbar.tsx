@@ -24,7 +24,7 @@ export default async function Navbar() {
       {session ? (
         <div className="flexCenter gap-4">
           <ProfileMenu session={session} />{" "}
-          <Link href={"/create-project"}>Share Work</Link>
+          <Link href={"/create-project"} className="hidden sm:flex px-5 py-3 rounded-3xl bg-black text-white">Share Work</Link>
         </div>
       ) : (
         <AuthProviders />

@@ -63,11 +63,8 @@ export default function ProfileMenu({
 
             <div className="flex flex-col gap-3 pt-10 items-start w-full">
               <Menu.Item>
-                <Link
-                  href={`/profile/${session?.user?.id}`}
-                  className="text-sm"
-                >
-                  Work Preferences
+                <Link href={`/create-project`} className="text-sm">
+                  Creaet Project
                 </Link>
               </Menu.Item>
               <Menu.Item>
