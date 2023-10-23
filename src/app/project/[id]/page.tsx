@@ -61,6 +61,14 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
             <ProjectActions projectId={projectDetails?.id} />
           </div>
         )}
+        {session?.user?.email !== projectDetails?.createdBy?.email && (
+          <Link
+            href={projectDetails.createdBy.email}
+            className="mt-4 px-5 py-3 text-sm sm:text-base rounded-3xl bg-black text-white mx-auto"
+          >
+            Work with me
+          </Link>
+        )}
       </section>
 
       <section className="mt-14 flexCenter">
@@ -123,12 +131,12 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
             ]
           }
         </p>
-        <div
-          // href={projectDetails.createdBy.email}
+        <Link
+          href={projectDetails.createdBy.email}
           className="mt-4 px-5 py-3 text-sm sm:text-base rounded-3xl bg-black text-white mx-auto"
         >
           Work with me
-        </div>
+        </Link>
       </div>
 
       <RelatedProjects
