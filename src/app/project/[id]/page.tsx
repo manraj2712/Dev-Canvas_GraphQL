@@ -62,12 +62,12 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
           </div>
         )}
         {session?.user?.email !== projectDetails?.createdBy?.email && (
-          <Link
-            href={projectDetails.createdBy.email}
+          <a
+            href={`mailto:${projectDetails.createdBy.email}`}
             className="mt-4 px-5 py-3 text-sm sm:text-base rounded-3xl bg-black text-white mx-auto"
           >
             Work with me
-          </Link>
+          </a>
         )}
       </section>
 
@@ -131,12 +131,12 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
             ]
           }
         </p>
-        <Link
-          href={projectDetails.createdBy.email}
+        <a
+          href={`mailto:${projectDetails.createdBy.email}`}
           className="mt-4 px-5 py-3 text-sm sm:text-base rounded-3xl bg-black text-white mx-auto"
         >
           Work with me
-        </Link>
+        </a>
       </div>
 
       <RelatedProjects
