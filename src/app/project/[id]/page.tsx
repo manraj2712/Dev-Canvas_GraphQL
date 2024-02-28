@@ -1,6 +1,6 @@
 import { ProjectInterface } from "@/common/types";
 import Modal from "@/components/modal";
-import { getProjectDetails } from "@/graphql/methods";
+import { getProjectDetails } from "@/mongodb";
 import { getCurrentServerSession } from "@/lib/session";
 import Link from "next/link";
 import React from "react";
@@ -19,12 +19,12 @@ const personDescriptions = [
 
 const Project = async ({ params: { id } }: { params: { id: string } }) => {
   const session = await getCurrentServerSession();
-  const res = (await getProjectDetails(id)) as { project?: ProjectInterface };
-  if (!res?.project) {
+  const res = (await getProjectDetails(id)) as ProjectInterface;
+  if (!res) {
     return <h1>Failed to fetch project information</h1>;
   }
-  const projectDetails = res.project;
-  const renderLink = () => `/profile/${projectDetails.createdBy?.id}`;
+  const projectDetails = res;
+  const renderLink = () => `/profile/${projectDetails.createdBy?._id}`;
   return (
     <Modal>
       <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
@@ -58,7 +58,7 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
 
         {session?.user?.email === projectDetails?.createdBy?.email && (
           <div className="flex justify-items-end items-center gap-2">
-            <ProjectActions projectId={projectDetails?.id} />
+            <ProjectActions projectId={projectDetails?._id} />
           </div>
         )}
         {session?.user?.email !== projectDetails?.createdBy?.email && (
@@ -140,8 +140,8 @@ const Project = async ({ params: { id } }: { params: { id: string } }) => {
       </div>
 
       <RelatedProjects
-        userId={projectDetails?.createdBy?.id}
-        projectId={projectDetails?.id}
+        userId={projectDetails?.createdBy?._id}
+        projectId={projectDetails?._id}
       />
     </Modal>
   );

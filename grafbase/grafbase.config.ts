@@ -1,4 +1,19 @@
-import { g, config, auth } from "@grafbase/sdk";
+import { config, auth, connector, graph } from "@grafbase/sdk";
+
+const g = graph.Standalone();
+
+const pg = connector.Postgres("pg", {
+  url: g.env("DATABASE_URL"),
+});
+
+const mongodb = connector.MongoDB("MongoDB", {
+  url: g.env("MONGO_ATLAS_URL"),
+  apiKey: g.env("MONGO_API_KEY"),
+  dataSource: g.env("MONGO_DATASOURCE"),
+  database: g.env("MONGO_DATABASE"),
+});
+
+g.datasource(mongodb);
 
 // @ts-ignore
 const User = g
@@ -40,7 +55,7 @@ const jwt = auth.JWT({
 });
 
 export default config({
-  schema: g,
+  graph: g,
   auth: {
     providers: [jwt],
     rules: (rules) => rules.private(),

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { fetchToken } from "@/lib/actions";
-import { deleteUserProject } from "@/graphql/methods";
+import { deleteUserProject } from "@/mongodb";
 import { useRouter } from "next/navigation";
 const ProjectActions = ({ projectId }: { projectId: string }) => {
   const router = useRouter();

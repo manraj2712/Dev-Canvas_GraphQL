@@ -1,22 +1,23 @@
-'use client';
+"use client";
 import { ProjectInterface } from "@/common/types";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 const ProjectCard = (project: ProjectInterface, key: string) => {
-    const [randomLikes, setRandomLikes] = useState(0);
-    const [randomViews, setRandomViews] = useState('');
+  const [randomLikes, setRandomLikes] = useState(0);
+  const [randomViews, setRandomViews] = useState("");
 
-    useEffect(()=>{
-        setRandomLikes(Math.floor(Math.random() * 10000))
-        const randomViews = Math.floor(Math.random() * 10000)
-        if(randomViews > 1000){
-            setRandomViews(`${(randomViews/1000).toFixed(1)}k`)
-    }},[]);
+  useEffect(() => {
+    setRandomLikes(Math.floor(Math.random() * 10000));
+    const randomViews = Math.floor(Math.random() * 10000);
+    if (randomViews > 1000) {
+      setRandomViews(`${(randomViews / 1000).toFixed(1)}k`);
+    }
+  }, []);
   return (
     <div className="flexCenter flex-col rounded-2xl drop-shadow-card">
       <Link
-        href={`/project/${project.id}`}
+        href={`/project/${project._id}`}
         className="flexCenter group relative w-full h-full"
       >
         <Image
@@ -31,7 +32,7 @@ const ProjectCard = (project: ProjectInterface, key: string) => {
         </div>
       </Link>
       <div className="flexBetween w-full px-2 mt-3 font-semibold text-sm">
-        <Link href={`/profile/${project.createdBy.id}`}>
+        <Link href={`/profile/${project.createdBy._id}`}>
           <div className="flexCenter gap-2">
             <Image
               src={project.createdBy.avatarUrl}

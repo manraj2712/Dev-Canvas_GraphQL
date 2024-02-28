@@ -11,7 +11,7 @@ import {
   ProjectInterface,
   SessionInterface,
 } from "@/common/types";
-import { createNewProject, editUserProject } from "@/graphql/methods";
+import { createNewProject, editUserProject } from "@/mongodb";
 import { fetchToken } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
@@ -44,13 +44,13 @@ export default function ProjectForm({
       if (type === ProjectFormType.CREATE && tokenObj && session) {
         await createNewProject({
           form: form,
-          creatorId: session.user.id,
+          creatorEmail: session.user.email,
           token: tokenObj.token,
         });
       } else if (type === ProjectFormType.EDIT && tokenObj && session) {
         await editUserProject({
           form: form,
-          id: project?.id as string,
+          id: project?._id as string,
           token: tokenObj.token,
         });
       }

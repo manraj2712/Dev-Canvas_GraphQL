@@ -4,7 +4,7 @@ import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
-import { createUser, getUser } from "../graphql/methods";
+import { createUser, getUser } from "../mongodb";
 import { SessionInterface, UserProfile } from "@/common/types";
 
 export const authOptions: NextAuthOptions = {
@@ -62,8 +62,7 @@ export const authOptions: NextAuthOptions = {
         const userExists = (await getUser(user?.email as string)) as {
           user?: UserProfile;
         };
-
-        if (!userExists.user) {
+        if (!userExists) {
           const res = await createUser({
             name: user?.name as string,
             email: user?.email as string,

@@ -1,5 +1,5 @@
 import { ProjectInterface, UserProfile } from "@/common/types";
-import { getUserProjects } from "@/graphql/methods";
+import { getUserProjects } from "@/mongodb";
 import Link from "next/link";
 import Image from "next/image";
 const RelatedProjects = async ({
@@ -9,16 +9,16 @@ const RelatedProjects = async ({
   userId: string;
   projectId: string;
 }) => {
-  const result = (await getUserProjects(userId)) as { user?: UserProfile };
-  const projects = result.user?.projects.edges.filter(({ node }) => {
-    return node.id !== projectId;
-  });
+  const result = (await getUserProjects(userId)) as ProjectInterface[];
+  const projects = result;
   return (
     <section className="flex flex-col mt-32 w-full">
       <div className="flexBetween">
-        <p className="text-base font-bold">More by {result?.user?.name}</p>
+        <p className="text-base font-bold">
+          More by {result[0]?.createdBy?.name}
+        </p>
         <Link
-          href={`/profile/${result?.user?.id}`}
+          href={`/profile/${result[0]?.createdBy?._id}`}
           className="text-primary-purple text-base"
         >
           View Profile
@@ -26,24 +26,24 @@ const RelatedProjects = async ({
       </div>
 
       <div className="related_projects-grid">
-        {projects?.map(({ node }: { node: ProjectInterface }) => (
+        {projects?.map((project: ProjectInterface) => (
           <div
-            key={node.id}
+            key={project._id}
             className="flexCenter related_project-card drop-shadow-card"
           >
             <Link
-              href={`/project/${node.id}`}
+              href={`/project/${project._id}`}
               className="flexCenter group relative w-full h-full"
             >
               <Image
-                src={node.image}
+                src={project.image}
                 width={414}
                 height={314}
                 className="w-full h-full object-cover rounded-2xl"
                 alt="Project Image"
               />
               <div className="hidden group-hover:flex related_project-card_title">
-                <p className="w-full">{node.title}</p>
+                <p className="w-full">{project.title}</p>
               </div>
             </Link>
           </div>

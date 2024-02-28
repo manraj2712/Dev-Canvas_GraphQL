@@ -2,7 +2,7 @@ import { ProjectInterface } from "@/common/types";
 import Categories from "@/components/categories";
 import Pagination from "@/components/pagination";
 import ProjectCard from "@/components/projectCard";
-import { fetchAllProjects } from "@/graphql/methods";
+import { fetchAllProjects } from "@/mongodb";
 
 type ProjectSearch = {
   projectSearch: {
@@ -21,11 +21,14 @@ type ProjectSearch = {
 export default async function Home({
   searchParams: { category, endCursor },
 }: {
-  searchParams: { category?: string, endCursor?: string };
+  searchParams: { category?: string; endCursor?: string };
 }) {
-  const data = (await fetchAllProjects({ category,endCursor })) as ProjectSearch;
-  const projectsToDisplay = data?.projectSearch?.edges;
-  const pagination = data?.projectSearch?.pageInfo;
+  const data = await fetchAllProjects({
+    category,
+    endCursor,
+  });
+  const projectsToDisplay = data;
+  const pagination = data.pageInfo;
   if (projectsToDisplay.length === 0) {
     return (
       <section className="flexStart flex-col paddings">
@@ -41,8 +44,8 @@ export default async function Home({
       <section className="flex-start flex-col paddings mb-16">
         <Categories />
         <section className="projects-grid">
-          {projectsToDisplay.map(({ node }: { node: ProjectInterface }) => {
-            return <ProjectCard {...node} key={node.id} />;
+          {projectsToDisplay.map((project: ProjectInterface) => {
+            return <ProjectCard {...project} key={project._id} />;
           })}
         </section>
         <Pagination
