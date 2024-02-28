@@ -106,7 +106,7 @@
 import { ProjectFormInput } from "@/common/types";
 import { uploadImage } from "@/lib/actions";
 import Axios from "axios";
-const API_URL = "http://localhost:8080/api/dev-canvas";
+const API_URL = "https://manraj.in.net/api/dev-canvas";
 
 export const createNewProject = async ({
   form,
