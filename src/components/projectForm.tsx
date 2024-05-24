@@ -118,7 +118,7 @@ export default function ProjectForm({
       </div>
       <FormFeild
         label="Title"
-        placeholder="CodeStreax"
+        placeholder="DevCanvas"
         error="Please enter a valid title"
         setState={(value: string) => {
           handleStateChange({ value: value, fieldName: "title" });
@@ -136,7 +136,7 @@ export default function ProjectForm({
       />
       <FormFeild
         label="Website URL"
-        placeholder="https://codestreax.tech"
+        placeholder="https://DevCanvas.tech"
         error="Please enter a valid url"
         setState={(value: string) => {
           handleStateChange({ value: value, fieldName: "liveSiteUrl" });
@@ -145,7 +145,7 @@ export default function ProjectForm({
       />
       <FormFeild
         label="Github URL"
-        placeholder="https://github.com/CodeStreax"
+        placeholder="https://github.com/DevCanvas"
         error="Please enter a valid url"
         setState={(value: string) => {
           handleStateChange({ value: value, fieldName: "githubUrl" });
